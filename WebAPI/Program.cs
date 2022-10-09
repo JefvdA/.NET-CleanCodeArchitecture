@@ -1,3 +1,4 @@
+using Application.Extenstions;
 using Infrastructure.Contexts;
 using Infrastructure.Extenstions;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Register the infrastructure
 builder.Services.RegisterInfrastructure();
+// Register the application
+builder.Services.RegisterApplication();
 
 var app = builder.Build();
 
