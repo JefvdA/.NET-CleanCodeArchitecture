@@ -12,9 +12,9 @@ public class TodoItemService : ITodoItemService
         _unitOfWork = unitOfWork;
     }
 
-    public IEnumerable<TodoItem> GetAll(int pageNr, int pageSize)
+    public async Task<IEnumerable<TodoItem>> GetAll(int pageNr, int pageSize)
     {
-        return _unitOfWork.TodoItemRepository.GetAll(pageNr, pageSize);
+        return await _unitOfWork.TodoItemRepository.GetAll(pageNr, pageSize);
     }
 
     public Task<TodoItem> GetById(int id)

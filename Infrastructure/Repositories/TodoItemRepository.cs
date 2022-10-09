@@ -14,9 +14,9 @@ public class TodoItemRepository : ITodoItemRepository
         _context = context;
     }
     
-    public IEnumerable<TodoItem> GetAll(int pageNr, int pageSize)
+    public async Task<IEnumerable<TodoItem>> GetAll(int pageNr, int pageSize)
     {
-        return _context.TodoItems.Skip((pageNr - 1) * pageSize).Take(pageSize).ToList();
+        return await _context.TodoItems.ToListAsync();
     }
 
     public async Task<TodoItem> GetById(int id)

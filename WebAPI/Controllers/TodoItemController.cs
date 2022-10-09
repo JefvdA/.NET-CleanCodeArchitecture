@@ -1,8 +1,10 @@
+using Application.CQRS.Query.TodoItem;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 using Infrastructure.Contexts;
 using Domain.Models;
+using MediatR;
 
 namespace WebAPI.Controllers
 {
@@ -13,17 +15,19 @@ namespace WebAPI.Controllers
         private const string DeleteKey = "123456789";
         
         private readonly ITodoItemService _todoItemService;
+        private readonly IMediator _mediator;
 
-        public TodoItemController(ITodoItemService todoItemService)
+        public TodoItemController(ITodoItemService todoItemService, IMediator mediator)
         {
             _todoItemService = todoItemService;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromQuery] int pageNr = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAll([FromQuery] int pageNr = 1, [FromQuery] int pageSize = 10)
         {
-            var result = _todoItemService.GetAll(pageNr, pageSize);
-            
+            var result = await _mediator.Send(new GetAllTodoItemsQuery() { PageNr = pageNr, PageSize = pageSize });
+
             return Ok(result);
         }
         

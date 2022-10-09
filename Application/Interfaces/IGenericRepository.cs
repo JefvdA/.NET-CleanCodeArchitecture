@@ -2,7 +2,7 @@ namespace Application.Interfaces;
 
 public interface IGenericRepository<T>
 {
-    IEnumerable<T> GetAll(int pageNr, int pageSize);
+    Task<IEnumerable<T>> GetAll(int pageNr, int pageSize);
     
     Task<T> GetById(int id);
     
