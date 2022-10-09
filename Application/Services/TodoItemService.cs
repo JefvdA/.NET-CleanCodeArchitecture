@@ -35,7 +35,7 @@ public class TodoItemService : ITodoItemService
         if (existing == null)
             throw new KeyNotFoundException("This TodoItem does not exist");
 
-        _unitOfWork.TodoItemRepository.Update(updatedEntity);
+        existing.Description = updatedEntity.Description;
         _unitOfWork.Commit();
         return updatedEntity;
     }
