@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 using Infrastructure.Contexts;
@@ -11,58 +12,73 @@ namespace WebAPI.Controllers
     {
         private const string DeleteKey = "123456789";
         
-        private readonly CleanCodeArchitectureDbContext _context;
+        private readonly ITodoItemService _todoItemService;
 
-        public TodoItemController(CleanCodeArchitectureDbContext context)
+        public TodoItemController(ITodoItemService todoItemService)
         {
-            _context = context;
+            _todoItemService = todoItemService;
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] int pageNr = 1, [FromQuery] int pageSize = 10)
         {
-            var result = _context.TodoItems;
+            var result = _todoItemService.GetAll(pageNr, pageSize);
             
             return Ok(result);
         }
         
         [HttpGet("{id:int}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _context.TodoItems.FirstOrDefault(x => x.Id == id);
-            if (result == null)
+            try
+            {
+                var result = await _todoItemService.GetById(id);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException e)
             {
                 return NotFound();
             }
-            return Ok(result);
         }
         
         [HttpPost]
-        public IActionResult CreateTodoId(TodoItem item)
+        public IActionResult CreateTodoItem(TodoItem item)
         {
-            _context.TodoItems.Add(item);
-            _context.SaveChanges();
+            _todoItemService.Create(item);
             return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
         }
         
-        [HttpPut]
-        public IActionResult UpdateTodoId(TodoItem item)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateTodoItem(int id, TodoItem item)
         {
-            _context.Update(item);
-            _context.SaveChanges();
-            return NoContent();
+            if (id != item.Id) return BadRequest();
+
+            try
+            {
+                await _todoItemService.Update(item);
+                return NoContent();
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound();
+            }
         }
         
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteTodoId(int id, [FromHeader(Name = "X-AccessKey")] string key)
+        public async Task<IActionResult> DeleteTodoItem(int id, [FromHeader(Name = "X-AccessKey")] string key)
         {
             if (key != DeleteKey)
                 return Unauthorized();
-            
-            TodoItem todoItem = new() { Id = id };
-            _context.TodoItems.Remove(todoItem);
-            _context.SaveChanges();
-            return NoContent();
+
+            try
+            {
+                await _todoItemService.Delete(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound();
+            }
         }
     }
 }
