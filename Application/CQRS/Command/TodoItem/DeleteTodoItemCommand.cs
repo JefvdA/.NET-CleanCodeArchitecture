@@ -5,21 +5,21 @@ namespace Application.CQRS.Command.TodoItem;
 
 using Domain.Models;
 
-public class DeleteTodoItemQuery : IRequest<TodoItem>
+public class DeleteTodoItemCommand: IRequest<TodoItem>
 {
     public int Id { get; set; }
 }
 
-public class DeleteTodoItemQueryHandler : IRequestHandler<DeleteTodoItemQuery, TodoItem>
+public class DeleteTodoItemCommandHandler : IRequestHandler<DeleteTodoItemCommand, TodoItem>
 {
     private readonly IUnitOfWork _unitOfWork;
     
-    public DeleteTodoItemQueryHandler(IUnitOfWork unitOfWork)
+    public DeleteTodoItemCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<TodoItem> Handle(DeleteTodoItemQuery request, CancellationToken cancellationToken)
+    public async Task<TodoItem> Handle(DeleteTodoItemCommand request, CancellationToken cancellationToken)
     {
         var todoItem = await _unitOfWork.TodoItemRepository.GetById(request.Id);
         _unitOfWork.TodoItemRepository.Delete(todoItem);

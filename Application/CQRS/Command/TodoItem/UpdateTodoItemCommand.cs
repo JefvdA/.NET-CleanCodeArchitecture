@@ -5,21 +5,21 @@ namespace Application.CQRS.Command.TodoItem;
 
 using Domain.Models;
 
-public class UpdateTodoItemQuery : IRequest<TodoItem>
+public class UpdateTodoItemCommand : IRequest<TodoItem>
 {
     public TodoItem UpdatedTodoItem { get; set; } = new TodoItem();
 }
 
-public class UpdateTodoItemQueryHandler : IRequestHandler<UpdateTodoItemQuery, TodoItem>
+public class UpdateTodoItemCommandHandler : IRequestHandler<UpdateTodoItemCommand, TodoItem>
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateTodoItemQueryHandler(IUnitOfWork unitOfWork)
+    public UpdateTodoItemCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<TodoItem> Handle(UpdateTodoItemQuery request, CancellationToken cancellationToken)
+    public async Task<TodoItem> Handle(UpdateTodoItemCommand request, CancellationToken cancellationToken)
     {
         _unitOfWork.TodoItemRepository.Update(request.UpdatedTodoItem);
         await _unitOfWork.Commit();
