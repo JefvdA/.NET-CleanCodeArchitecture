@@ -1,7 +1,14 @@
+using Application.Extensions;
+using Infrastructure.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// Register the infrastructure
+builder.Services.RegisterInfrastructure();
+// Register the application
+builder.Services.RegisterApplication();
 
 var app = builder.Build();
 
@@ -22,6 +29,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=TodoItem}/{action=Index}/{id?}");
 
 app.Run();

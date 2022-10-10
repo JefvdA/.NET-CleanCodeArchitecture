@@ -1,0 +1,17 @@
+@using Domain.Models
+@model dynamic
+
+@{
+    ViewBag.Title = "All TodoItems";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+<ul>
+@foreach (TodoItem todoItem in ViewBag.TodoItems)
+{
+    <li>
+        <p>@todoItem.Id : @todoItem.Description</p>
+    </li>
+}
+</ul>
