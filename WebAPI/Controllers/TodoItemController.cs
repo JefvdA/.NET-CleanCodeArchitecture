@@ -1,5 +1,5 @@
+using Application.CQRS.Command.TodoItem;
 using Application.CQRS.Query.TodoItem;
-using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 using Domain.Models;
@@ -13,12 +13,10 @@ namespace WebAPI.Controllers
     {
         private const string DeleteKey = "123456789";
         
-        private readonly ITodoItemService _todoItemService;
         private readonly IMediator _mediator;
 
-        public TodoItemController(ITodoItemService todoItemService, IMediator mediator)
+        public TodoItemController(IMediator mediator)
         {
-            _todoItemService = todoItemService;
             _mediator = mediator;
         }
 
@@ -35,7 +33,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var result = await _todoItemService.GetById(id);
+                var result = await _mediator.Send(new GetTodoItemByIdQuery() { Id = id });
                 return Ok(result);
             }
             catch (KeyNotFoundException e)
@@ -45,9 +43,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost]
-        public IActionResult CreateTodoItem(TodoItem item)
+        public async Task<IActionResult> CreateTodoItem(TodoItem item)
         {
-            _todoItemService.Create(item);
+            await _mediator.Send(new CreateTodoItemCommand() { NewTodoItem = item });
             return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
         }
         
@@ -58,7 +56,7 @@ namespace WebAPI.Controllers
 
             try
             {
-                await _todoItemService.Update(item);
+                await _mediator.Send(new UpdateTodoItemCommand() { UpdatedTodoItem = item });
                 return NoContent();
             }
             catch (KeyNotFoundException e)
@@ -75,7 +73,7 @@ namespace WebAPI.Controllers
 
             try
             {
-                await _todoItemService.Delete(id);
+                await _mediator.Send(new DeleteTodoItemCommand() { Id = id });
                 return NoContent();
             }
             catch (KeyNotFoundException e)
