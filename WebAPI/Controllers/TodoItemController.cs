@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] int pageNr = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new GetAllTodoItemsQuery() { PageNr = pageNr, PageSize = pageSize });
+            var result = await _mediator.Send(new GetAllTodoItemsQuery() { PageNr = pageNr, PageSize = pageSize});
 
             return Ok(result);
         }
