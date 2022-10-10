@@ -2,7 +2,6 @@ using Application.CQRS.Query.TodoItem;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-using Infrastructure.Contexts;
 using Domain.Models;
 using MediatR;
 

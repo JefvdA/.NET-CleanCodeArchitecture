@@ -11,7 +11,7 @@ public class CleanCodeArchitectureDbContext : DbContext
     {
     }
     
-    public DbSet<TodoItem>? TodoItems { get; set; }
+    public DbSet<TodoItem> TodoItems { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

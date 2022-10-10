@@ -1,13 +1,11 @@
-using System.Reflection;
 using Application.Interfaces;
 using Infrastructure.Contexts;
 using Infrastructure.Repositories;
 using Infrastructure.UoW;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.Extentions;
+namespace Infrastructure.Extensions;
 
 public static class Registrator
 {

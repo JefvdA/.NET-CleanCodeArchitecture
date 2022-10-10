@@ -9,10 +9,6 @@ public class GetAllTodoItemsQuery : IRequest<IEnumerable<TodoItem>>
 {
     public int PageNr { get; set; }
     public int PageSize { get; set; }
-
-    public GetAllTodoItemsQuery()
-    {
-    }
 }
 
 public class GetAllTodoItemsQueryHandler : IRequestHandler<GetAllTodoItemsQuery, IEnumerable<TodoItem>>

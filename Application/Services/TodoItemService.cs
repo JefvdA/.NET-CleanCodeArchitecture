@@ -25,7 +25,7 @@ public class TodoItemService : ITodoItemService
     public async Task<TodoItem> Create(TodoItem newEntity)
     {
         _unitOfWork.TodoItemRepository.Create(newEntity);
-        _unitOfWork.Commit();
+        await _unitOfWork.Commit();
         return newEntity;
     }
 
@@ -36,7 +36,7 @@ public class TodoItemService : ITodoItemService
             throw new KeyNotFoundException("This TodoItem does not exist");
 
         existing.Description = updatedEntity.Description;
-        _unitOfWork.Commit();
+        await _unitOfWork.Commit();
         return updatedEntity;
     }
 
@@ -47,6 +47,6 @@ public class TodoItemService : ITodoItemService
             throw new KeyNotFoundException("This TodoItem does not exist");
         
         _unitOfWork.TodoItemRepository.Delete(existing);
-        _unitOfWork.Commit();
+        await _unitOfWork.Commit();
     }
 }

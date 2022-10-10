@@ -3,7 +3,7 @@ using Application.Services;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Application.Extenstions;
+namespace Application.Extensions;
 
 public static class Registrator
 {
@@ -22,7 +22,7 @@ public static class Registrator
         return services;
     }
     
-    public static IServiceCollection RegisterMediatr(this IServiceCollection services)
+    private static IServiceCollection RegisterMediatr(this IServiceCollection services)
     {
         services.AddMediatR(typeof(Registrator).Assembly);
         

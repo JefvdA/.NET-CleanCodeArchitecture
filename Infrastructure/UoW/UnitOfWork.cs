@@ -15,8 +15,8 @@ public class UnitOfWork : IUnitOfWork
         TodoItemRepository = todoItemRepository;
     }
 
-    public void Commit()
+    public Task Commit()
     {
-        _context.SaveChanges();
+        return _context.SaveChangesAsync();
     }
 }
