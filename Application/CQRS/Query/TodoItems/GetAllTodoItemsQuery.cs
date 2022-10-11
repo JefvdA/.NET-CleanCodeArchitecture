@@ -1,7 +1,7 @@
 using Application.Interfaces;
 using MediatR;
 
-namespace Application.CQRS.Query.TodoItem;
+namespace Application.CQRS.Query.TodoItems;
 
 using Domain.Models;
 

@@ -1,5 +1,5 @@
-using Application.CQRS.Command.TodoItem;
-using Application.CQRS.Query.TodoItem;
+using Application.CQRS.Command.TodoItems;
+using Application.CQRS.Query.TodoItems;
 using Microsoft.AspNetCore.Mvc;
 
 using Domain.Models;

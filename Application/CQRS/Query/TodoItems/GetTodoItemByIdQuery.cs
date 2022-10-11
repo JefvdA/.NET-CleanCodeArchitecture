@@ -1,9 +1,8 @@
 using Application.Interfaces;
+using Domain.Models;
 using MediatR;
 
-namespace Application.CQRS.Query.TodoItem;
-
-using Domain.Models;
+namespace Application.CQRS.Query.TodoItems;
 
 public class GetTodoItemByIdQuery : IRequest<TodoItem>
 {

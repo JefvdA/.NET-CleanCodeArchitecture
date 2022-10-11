@@ -1,4 +1,4 @@
-using Application.CQRS.Query.TodoItem;
+using Application.CQRS.Query.TodoItems;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,9 +1,8 @@
 using Application.Interfaces;
+using Domain.Models;
 using MediatR;
 
-namespace Application.CQRS.Command.TodoItem;
-
-using Domain.Models;
+namespace Application.CQRS.Command.TodoItems;
 
 public class CreateTodoItemCommand : IRequest<TodoItem>
 {
