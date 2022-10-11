@@ -20,7 +20,14 @@ public class UpdateTodoItemCommandHandler : IRequestHandler<UpdateTodoItemComman
 
     public async Task<TodoItem> Handle(UpdateTodoItemCommand request, CancellationToken cancellationToken)
     {
-        _unitOfWork.TodoItemRepository.Update(request.UpdatedTodoItem);
+        var todoItem = await _unitOfWork.TodoItemRepository.GetById(request.UpdatedTodoItem.Id);
+
+        if (todoItem == null)
+            throw new KeyNotFoundException("This TodoItem does not exist!");
+        
+        todoItem.Description = request.UpdatedTodoItem.Description;
+        
+        _unitOfWork.TodoItemRepository.Update(todoItem);
         await _unitOfWork.Commit();
         return request.UpdatedTodoItem;
     }
