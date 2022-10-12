@@ -3,10 +3,14 @@ using Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add user secrets - for connection string
+builder.Configuration.AddUserSecrets<Program>();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 // Register the infrastructure
-builder.Services.RegisterInfrastructure();
+builder.Services.RegisterInfrastructure(connectionString);
 // Register the application
 builder.Services.RegisterApplication();
 

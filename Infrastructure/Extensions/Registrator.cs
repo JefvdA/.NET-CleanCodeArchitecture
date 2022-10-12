@@ -9,18 +9,18 @@ namespace Infrastructure.Extensions;
 
 public static class Registrator
 {
-    public static IServiceCollection RegisterInfrastructure(this IServiceCollection services)
+    public static IServiceCollection RegisterInfrastructure(this IServiceCollection services, string connectionString)
     {
-        services.RegisterDbContext();
+        services.RegisterDbContext(connectionString);
         services.RegisterRepositories();
 
         return services;
     }
 
-    private static IServiceCollection RegisterDbContext(this IServiceCollection services)
+    private static IServiceCollection RegisterDbContext(this IServiceCollection services, string connectionString)
     {
         services.AddDbContext<CleanCodeArchitectureDbContext>(options =>
-            options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
+            options.UseSqlServer(connectionString));
 
         return services;
     }
