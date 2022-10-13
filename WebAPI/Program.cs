@@ -2,6 +2,7 @@ using Application.Extensions;
 using Infrastructure.Contexts;
 using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
+using WebAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseErrorHandlingMiddleware();
 
 app.UseHttpsRedirection();
 

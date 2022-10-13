@@ -31,21 +31,16 @@ namespace WebAPI.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
-            try
-            {
-                var result = await _mediator.Send(new GetTodoItemByIdQuery() { Id = id });
-                return Ok(result);
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound();
-            }
+            var result = await _mediator.Send(new GetTodoItemByIdQuery() { Id = id });
+            
+            return Ok(result);
         }
         
         [HttpPost]
         public async Task<IActionResult> CreateTodoItem(TodoItem item)
         {
             await _mediator.Send(new CreateTodoItemCommand() { NewTodoItem = item });
+            
             return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
         }
         
@@ -53,16 +48,9 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UpdateTodoItem(int id, TodoItem item)
         {
             if (id != item.Id) return BadRequest();
-
-            try
-            {
-                await _mediator.Send(new UpdateTodoItemCommand() { UpdatedTodoItem = item });
-                return NoContent();
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound();
-            }
+            
+            await _mediator.Send(new UpdateTodoItemCommand() { UpdatedTodoItem = item });
+            return NoContent();
         }
         
         [HttpDelete("{id:int}")]
@@ -70,16 +58,9 @@ namespace WebAPI.Controllers
         {
             if (key != DeleteKey)
                 return Unauthorized();
-
-            try
-            {
-                await _mediator.Send(new DeleteTodoItemCommand() { Id = id });
-                return NoContent();
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound();
-            }
+            
+            await _mediator.Send(new DeleteTodoItemCommand() { Id = id });
+            return NoContent();
         }
     }
 }
