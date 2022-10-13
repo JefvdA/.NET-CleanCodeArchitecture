@@ -11,6 +11,16 @@ public class CreateTodoItemCommand : IRequest<TodoItem>
     public bool Done { get; set; }
 }
 
+public class CreateTodoItemCommandValidator : AbstractValidator<CreateTodoItemCommand>
+{
+    public CreateTodoItemCommandValidator()
+    {
+        RuleFor(x => x.Description)
+            .NotEmpty()
+            .MaximumLength(15);
+    }
+}
+
 public class CreateTodoItemCommandHandler : IRequestHandler<CreateTodoItemCommand, TodoItem>
 {
     private readonly IUnitOfWork _unitOfWork;

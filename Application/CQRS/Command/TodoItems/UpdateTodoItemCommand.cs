@@ -1,5 +1,6 @@
 using Application.Interfaces;
 using Domain.Models;
+using FluentValidation;
 using MediatR;
 
 namespace Application.CQRS.Command.TodoItems;
@@ -9,6 +10,16 @@ public class UpdateTodoItemCommand : IRequest<TodoItem>
     public int Id { get; set; }
     public string Description { get; set; } = "";
     public bool Done { get; set; }
+}
+
+public class UpdateTodoItemCommandValidator : AbstractValidator<UpdateTodoItemCommand>
+{
+    public UpdateTodoItemCommandValidator()
+    {
+        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Description).NotEmpty().MaximumLength(15);
+        RuleFor(x => x.Done).NotEmpty();
+    }
 }
 
 public class UpdateTodoItemCommandHandler : IRequestHandler<UpdateTodoItemCommand, TodoItem>
