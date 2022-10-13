@@ -8,6 +8,7 @@ public static class Registrator
     public static IServiceCollection RegisterApplication(this IServiceCollection services)
     {
         services.RegisterMediatr();
+        services.RegisterMapper();
         
         return services;
     }
@@ -16,6 +17,13 @@ public static class Registrator
     {
         services.AddMediatR(typeof(Registrator).Assembly);
         
+        return services;
+    }
+
+    private static IServiceCollection RegisterMapper(this IServiceCollection services)
+    {
+        services.AddAutoMapper(typeof(Registrator).Assembly);
+
         return services;
     }
 }
