@@ -7,7 +7,8 @@ namespace Application.CQRS.Command.TodoItems;
 
 public class CreateTodoItemCommand : IRequest<TodoItem>
 {
-    public TodoItem NewTodoItem { get; set; } = new TodoItem();
+    public string Description { get; set; } = "";
+    public bool Done { get; set; }
 }
 
 public class CreateTodoItemCommandHandler : IRequestHandler<CreateTodoItemCommand, TodoItem>
@@ -21,8 +22,14 @@ public class CreateTodoItemCommandHandler : IRequestHandler<CreateTodoItemComman
     
     public async Task<TodoItem> Handle(CreateTodoItemCommand request, CancellationToken cancellationToken)
     {
-        _unitOfWork.TodoItemRepository.Create(request.NewTodoItem);
+        var todoItem = new TodoItem()
+        {
+            Description = request.Description,
+            Done = request.Done
+        };
+        
+        _unitOfWork.TodoItemRepository.Create(todoItem);
         await _unitOfWork.Commit();
-        return request.NewTodoItem;
+        return todoItem;
     }
 }

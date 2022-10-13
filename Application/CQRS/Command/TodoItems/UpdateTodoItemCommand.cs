@@ -6,7 +6,9 @@ namespace Application.CQRS.Command.TodoItems;
 
 public class UpdateTodoItemCommand : IRequest<TodoItem>
 {
-    public TodoItem UpdatedTodoItem { get; set; } = new TodoItem();
+    public int Id { get; set; }
+    public string Description { get; set; } = "";
+    public bool Done { get; set; }
 }
 
 public class UpdateTodoItemCommandHandler : IRequestHandler<UpdateTodoItemCommand, TodoItem>
@@ -20,15 +22,16 @@ public class UpdateTodoItemCommandHandler : IRequestHandler<UpdateTodoItemComman
 
     public async Task<TodoItem> Handle(UpdateTodoItemCommand request, CancellationToken cancellationToken)
     {
-        var todoItem = await _unitOfWork.TodoItemRepository.GetById(request.UpdatedTodoItem.Id);
+        var todoItem = await _unitOfWork.TodoItemRepository.GetById(request.Id);
 
         if (todoItem == null)
             throw new KeyNotFoundException("This TodoItem does not exist!");
         
-        todoItem.Description = request.UpdatedTodoItem.Description;
+        todoItem.Description = request.Description;
+        todoItem.Done = request.Done;
         
         _unitOfWork.TodoItemRepository.Update(todoItem);
         await _unitOfWork.Commit();
-        return request.UpdatedTodoItem;
+        return todoItem;
     }
 }

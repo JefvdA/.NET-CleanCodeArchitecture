@@ -37,19 +37,15 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> CreateTodoItem(TodoItem item)
+        public async Task<IActionResult> CreateTodoItem([FromBody]CreateTodoItemCommand newTodoItem)
         {
-            await _mediator.Send(new CreateTodoItemCommand() { NewTodoItem = item });
-            
-            return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
+            return Created("", await _mediator.Send(newTodoItem));
         }
         
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateTodoItem(int id, TodoItem item)
+        [HttpPut]
+        public async Task<IActionResult> UpdateTodoItem([FromBody]UpdateTodoItemCommand updatedTodoItem)
         {
-            if (id != item.Id) return BadRequest();
-            
-            await _mediator.Send(new UpdateTodoItemCommand() { UpdatedTodoItem = item });
+            await _mediator.Send(updatedTodoItem);
             return NoContent();
         }
         
