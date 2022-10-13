@@ -1,3 +1,6 @@
+using System.Reflection;
+using Application.Behaviours;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +12,7 @@ public static class Registrator
     {
         services.RegisterMediatr();
         services.RegisterMapper();
+        services.RegisterValidators();
         
         return services;
     }
@@ -24,6 +28,14 @@ public static class Registrator
     {
         services.AddAutoMapper(typeof(Registrator).Assembly);
 
+        return services;
+    }
+
+    private static IServiceCollection RegisterValidators(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssembly(typeof(Registrator).Assembly);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+        
         return services;
     }
 }
